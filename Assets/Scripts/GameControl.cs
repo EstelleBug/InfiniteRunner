@@ -55,6 +55,14 @@ public class GameControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //DatabaseManager.AddNewScore("Constance", 155555, 2568);
+        //DatabaseManager.UpdateScore("laeti", 1000, 1000);
+        var topScores = DatabaseManager.topScores(5);
+        foreach (var score in topScores)
+        {
+            Debug.Log($"Username {score.username} score {score.score} coins {score.coins}");
+        }
+
         Player = GameObject.Find("Ch03_nonPBR");
 
         GroundsOnStage = new GameObject[numberOfGrounds];
