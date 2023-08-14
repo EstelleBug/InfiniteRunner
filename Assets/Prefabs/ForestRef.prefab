@@ -141,6 +141,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7455921491547993036, guid: 0ffa4c602885f5747a662a26afb632e8, type: 3}
+      propertyPath: m_CookingOptions
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 7796594876683610481, guid: 0ffa4c602885f5747a662a26afb632e8, type: 3}
       propertyPath: m_RootOrder
       value: -1
