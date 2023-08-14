@@ -109,7 +109,7 @@ public class animationStateControler : MonoBehaviour
             rb.position = new Vector3(MIN_X, transform.position.y, transform.position.z);
         }
 
-        Debug.Log(currentSpeed);
+        //Debug.Log(currentSpeed);
     }
 
     void OnTriggerEnter(Collider other)
@@ -118,6 +118,7 @@ public class animationStateControler : MonoBehaviour
         {
             animator.SetTrigger("isHit");
             currentSpeed = 0;
+            rb.velocity = Vector3.zero; // Arrête la vélocité du Rigidbody
             StartCoroutine(WaitAndGameOver());
         }
         else if (other.gameObject.tag == ("Reward"))
