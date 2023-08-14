@@ -1354,8 +1354,8 @@ MonoBehaviour:
   moveSpeed: 0.1
   slideSpeed: 0.2
   jumpSpeed: 5
-  jumpForce: 5
-  maxJumpHeight: 2
+  jumpForce: 20
+  maxJumpHeight: 1
   gravity: 9.81
 --- !u!54 &1467733296
 Rigidbody:
