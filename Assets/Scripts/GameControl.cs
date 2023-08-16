@@ -14,6 +14,8 @@ public class GameControl : MonoBehaviour
     private GameObject CoinPrefab;
     [SerializeField]
     private GameObject ObstaclePrefabs;
+    [SerializeField]
+    private GameObject ObstacleSlidePrefabs;
 
     private float groundSize;
     //private int consecutiveSameTypeCount = 0;
@@ -59,14 +61,6 @@ public class GameControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //DatabaseManager.AddNewScore("Constance", 155555, 2568);
-        //DatabaseManager.UpdateScore("laeti", 1000, 1000);
-        var topScores = DatabaseManager.topScores(5);
-        foreach (var score in topScores)
-        {
-            Debug.Log($"Username {score.username} score {score.score} coins {score.coins}");
-        }
-
         Player = GameObject.Find("Ch03_nonPBR");
 
         GroundsOnStage = new GameObject[numberOfGrounds];
@@ -178,7 +172,7 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    private void SpawnObstacle (GameObject ground)
+    private void SpawnObstacle(GameObject ground)
     {
         float obstacleSpawnZOffset = 10f; // Minimum distance between two obstacles
         float obstacleSpawnXMin = 2f;
@@ -191,31 +185,55 @@ public class GameControl : MonoBehaviour
 
         for (float x = startX; x <= endX; x++)
         {
-            if (Random.Range(0f, 1f) < 0.2f && totalObstaclesCount < numberOfObstacles) // Adjust the spawn probability as needed
+            if (Random.Range(0f, 1f) < 0.2f && totalObstaclesCount < numberOfObstacles)
             {
                 float obstacleSpawnZ = groundPosition.z + obstacleSpawnZOffset;
 
-                /// Cast a ray from the obstacle spawn position downwards to hit the terrain
                 Ray ray = new Ray(new Vector3(x, 10f, obstacleSpawnZ), Vector3.down);
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
                 {
-                    // Get the Y position of the hit point on the terrain
                     float obstacleSpawnY = hit.point.y;
 
-                    // Check if the Z position is already used for a coin
                     while (usedObstacleZPositions.Contains(obstacleSpawnZ))
                     {
                         obstacleSpawnZ += obstacleSpawnZOffset;
                     }
 
-                    GameObject obstacle = Instantiate(ObstaclePrefabs, new Vector3(x, obstacleSpawnY, obstacleSpawnZ), Quaternion.identity);
-                    spawnedObstacles.Add(obstacle);
-                    usedObstacleZPositions.Add(obstacleSpawnZ);
-                    totalObstaclesCount++;
-                    if (totalObstaclesCount >= numberOfObstacles)
-                        break;
+                    int obstaclePrefabIndex = Random.Range(0, 2); // Choix entre 0 et 1
+                    GameObject obstaclePrefab;
+
+                    if (obstaclePrefabIndex == 0)
+                    {
+                        obstaclePrefab = ObstaclePrefabs;
+                    }
+                    else
+                    {
+                        obstaclePrefab = ObstacleSlidePrefabs;
+                    }
+
+                    // Check if the obstacle prefab is the special one
+                    if (obstaclePrefab == ObstacleSlidePrefabs)
+                    {
+                        // Instantiate the special obstacle and apply the Y rotation
+                        GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(x, obstacleSpawnY, obstacleSpawnZ), Quaternion.Euler(0f, 90f, 0f));
+                        spawnedObstacles.Add(obstacle);
+                        usedObstacleZPositions.Add(obstacleSpawnZ);
+                        totalObstaclesCount++;
+                        if (totalObstaclesCount >= numberOfObstacles)
+                            break;
+                    }
+                    else
+                    {
+                        // Instantiate regular obstacle without rotation
+                        GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(x, obstacleSpawnY, obstacleSpawnZ), Quaternion.identity);
+                        spawnedObstacles.Add(obstacle);
+                        usedObstacleZPositions.Add(obstacleSpawnZ);
+                        totalObstaclesCount++;
+                        if (totalObstaclesCount >= numberOfObstacles)
+                            break;
+                    }
                 }
             }
         }
