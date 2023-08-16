@@ -14,12 +14,13 @@ public class GameOverScreen : MonoBehaviour
     public void Setup(int score)
     {
         gameObject.SetActive(true);
+
         scoreText.text = "Score: " + score;
     }
 
-    public void SaveScore(int score, int coins)
+    public void SaveScore()
     {
         string inputText = usernameText.text;
-        DatabaseManager.AddNewScore(inputText, score, coins);
+        DatabaseManager.AddNewScore(inputText, GameControl.Instance.GetScore(), GameControl.Instance.GetCoin());
     }
 }

@@ -40,6 +40,8 @@ public class GameControl : MonoBehaviour
     private int newScore = 0;
 
     public GameOverScreen GameOverScreen;
+    public GameObject CoinCount;
+    public GameObject ScoreCount;
 
     private void Awake()
     {
@@ -50,6 +52,8 @@ public class GameControl : MonoBehaviour
 
         Instance = this;
 
+        CoinCount = GameObject.Find("CoinCount");
+        ScoreCount = GameObject.Find("ScoreCount");
     }
 
     // Start is called before the first frame update
@@ -313,5 +317,7 @@ public class GameControl : MonoBehaviour
     public void GameOver()
     {
         GameOverScreen.Setup(score);
+        CoinCount.SetActive(false);
+        ScoreCount.SetActive(false);
     }
 }
