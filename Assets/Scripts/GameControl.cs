@@ -26,8 +26,10 @@ public class GameControl : MonoBehaviour
 
     private int numberOfGrounds = 7;
     private int totalCoinCount = 0;
+
     private int numberOfCoins = 30;
     private int totalHitCoins = 0;
+    private int previousTotalHitCoins = 0;
 
     private int numberOfObstacles = 20;
     private int totalObstaclesCount = 0;
@@ -40,6 +42,7 @@ public class GameControl : MonoBehaviour
 
     private int score = 0;
     private int newScore = 0;
+    private int bonusScore = 0;
 
     public GameOverScreen GameOverScreen;
     public GameObject CoinCount;
@@ -118,22 +121,24 @@ public class GameControl : MonoBehaviour
 
     private void UpdateScore()
     {
-        newScore = Mathf.FloorToInt(Player.transform.position.z);
+
+        int newHitCoins = totalHitCoins - previousTotalHitCoins;
+
+        if (newHitCoins >= 100)
+        {
+            bonusScore = (newHitCoins / 100) * 1000 + bonusScore;
+            previousTotalHitCoins = totalHitCoins; // Mettre à jour le total précédent de pièces
+            GameControlUI.Instance.ShowMessage();
+        }
+
+        newScore = Mathf.FloorToInt(Player.transform.position.z) + bonusScore;
 
         if (newScore >= score)
         {
             score = newScore;
         }
-    }
 
-    /*public void CheckForCoinBonus()
-    {
-        if (totalHitCoins % 100 == 0) // Check if the total coin count is a multiple of 100
-        {
-            score += 1000; // Apply the score bonus of 50
-            Debug.Log("bonus");
-        }
-    }*/
+    }
 
     private void SpawnCoins(GameObject ground)
     {
