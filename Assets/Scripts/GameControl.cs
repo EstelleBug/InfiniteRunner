@@ -104,15 +104,25 @@ public class GameControl : MonoBehaviour
                 Destroy(ground);
                 int n = Random.Range(0, GroundsPrefabs.Length);
                 ground = Instantiate(GroundsPrefabs[n]);
-                ground.transform.position = new Vector3(0, 0.2f, z + groundSize * numberOfGrounds);
+                // Check the tag of the new ground and adjust its position accordingly
+                if (ground.CompareTag("Desert") || ground.CompareTag("Mountain"))
+                {
+                    ground.transform.position = new Vector3(0.6f, 0.2f, z + groundSize * numberOfGrounds);
+                }
+                else if (ground.CompareTag("Forest"))
+                {
+                    ground.transform.position = new Vector3(0, 0.2f, z + groundSize * numberOfGrounds);
+                }
+
+                //ground.transform.position = new Vector3(0, 0.2f, z + groundSize * numberOfGrounds);
                 GroundsOnStage[i] = ground;
             }
         }
 
         foreach (var ground in GroundsOnStage)
         {
-            SpawnCoins(ground);
-            SpawnObstacle(ground);
+            //SpawnCoins(ground);
+            //SpawnObstacle(ground);
         }
 
         UpdateScore();
@@ -194,7 +204,7 @@ public class GameControl : MonoBehaviour
             {
                 float obstacleSpawnZ = groundPosition.z + obstacleSpawnZOffset;
 
-                Ray ray = new Ray(new Vector3(x, 10f, obstacleSpawnZ), Vector3.down);
+                Ray ray = new Ray(new Vector3(x, 5f, obstacleSpawnZ), Vector3.down);
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Ground")))

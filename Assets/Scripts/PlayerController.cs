@@ -13,13 +13,13 @@ public class animationStateControler : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed;
-    [SerializeField]
-    private float slideSpeed;
     private float currentSpeed = 0;
 
-    public float jumpForce = 5.0f; // Force du saut
-    public float maxJumpHeight = 2.0f; // Hauteur maximale du saut
-    public float gravity = 9.81f; // Gravité
+    [SerializeField]
+    private float jumpForce; // Force du saut
+    [SerializeField]
+    private float maxJumpHeight; // Hauteur maximale du saut
+    private float gravity = 9.81f; // Gravité
 
     private bool isJumping = false;
     private float initialYPosition;
@@ -32,7 +32,7 @@ public class animationStateControler : MonoBehaviour
     void Awake()
     {
         playerInput = new PlayerInput();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         rb = this.GetComponent<Rigidbody>(); 
 
     }
@@ -59,12 +59,10 @@ public class animationStateControler : MonoBehaviour
         if (playerInput.CharacterControl.Slide.triggered)
         {
             animator.SetBool("isSliding", true);
-            currentSpeed = slideSpeed;
         }
         if (!playerInput.CharacterControl.Slide.triggered)
         {
             animator.SetBool("isSliding", false);
-            currentSpeed = moveSpeed;
         }
 
         if (playerInput.CharacterControl.Jump.triggered && !isJumping)
@@ -96,7 +94,7 @@ public class animationStateControler : MonoBehaviour
 
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Hit And Fall"))
         {
-            rb.position += transform.forward * currentSpeed;
+            rb.position += transform.forward * currentSpeed * Time.deltaTime;
             rb.position += transform.right * horizontalMove;
 
         }
@@ -114,8 +112,10 @@ public class animationStateControler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("hitsomething");
         if (other.gameObject.tag == ("Obstacle"))
         {
+            //Debug.Log("obstacle");
             animator.SetTrigger("isHit");
             currentSpeed = 0;
             rb.velocity = Vector3.zero; // Arrête la vélocité du Rigidbody
@@ -124,7 +124,6 @@ public class animationStateControler : MonoBehaviour
         else if (other.gameObject.tag == ("Reward"))
         {
             GameControl.Instance.DestroyCoin(other.gameObject); // Call the DestroyCoin method in GameControl
-            //GameControl.Instance.CheckForCoinBonus();
             Destroy(other.gameObject); // Destroy the hit coin
         }
     }
