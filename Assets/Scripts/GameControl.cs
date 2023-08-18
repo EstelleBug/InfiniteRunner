@@ -74,7 +74,6 @@ public class GameControl : MonoBehaviour
             //UpdateGroundType();
             GroundsOnStage[i] = Instantiate(GroundsPrefabs[n]);
             //GroundsOnStage[i] = Instantiate(GroundsPrefabs[currentGroundTypeIndex]);
-            SpawnCoins(GroundsOnStage[i]);
         }
 
         //groundSize = GroundsOnStage[0].GetComponentInChildren<Transform>().Find("Road").localScale.z;
@@ -83,7 +82,15 @@ public class GameControl : MonoBehaviour
         float pos = Player.transform.position.z + groundSize / 2 - 1.5f;
         foreach (var ground in GroundsOnStage)
         {
-            ground.transform.position = new Vector3(0, 0.2f, pos);
+            // Adjust ground position based on the tag
+            if (ground.CompareTag("Desert") || ground.CompareTag("Mountain"))
+            {
+                ground.transform.position = new Vector3(1f, 0.2f, pos);
+            }
+            else if (ground.CompareTag("Forest"))
+            {
+                ground.transform.position = new Vector3(0, 0.2f, pos);
+            }
             pos += groundSize;
         }
     }
@@ -107,7 +114,7 @@ public class GameControl : MonoBehaviour
                 // Check the tag of the new ground and adjust its position accordingly
                 if (ground.CompareTag("Desert") || ground.CompareTag("Mountain"))
                 {
-                    ground.transform.position = new Vector3(0.6f, 0.2f, z + groundSize * numberOfGrounds);
+                    ground.transform.position = new Vector3(1f, 0.2f, z + groundSize * numberOfGrounds);
                 }
                 else if (ground.CompareTag("Forest"))
                 {
@@ -152,8 +159,8 @@ public class GameControl : MonoBehaviour
 
     private void SpawnCoins(GameObject ground)
     {
-        float coinSpawnXMin = 2f;
-        float coinSpawnXMax = 4f;
+        float coinSpawnXMin = 2.5f;
+        float coinSpawnXMax = 3f;
         float coinSpawnZOffset = 2f;
         float coinSpawnY = 1.5f; // Y position of the coins
         Quaternion coinRotation = Quaternion.Euler(90f, 0f, 0f); // 90 degrees rotation on X axis
@@ -191,7 +198,7 @@ public class GameControl : MonoBehaviour
     {
         float obstacleSpawnZOffset = 100f; // Minimum distance between two obstacles
         float obstacleSpawnXMin = 2f;
-        float obstacleSpawnXMax = 4f;
+        float obstacleSpawnXMax = 3f;
 
         Vector3 groundPosition = ground.transform.position;
 
