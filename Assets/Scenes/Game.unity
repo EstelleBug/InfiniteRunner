@@ -1385,7 +1385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -295, y: -185}
+  m_AnchoredPosition: {x: -295, y: 0}
   m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &952897729
@@ -3274,10 +3274,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.23
-  m_Height: 1.8
+  m_Radius: 0.19332647
+  m_Height: 1.7706959
   m_Direction: 1
-  m_Center: {x: 0, y: 0.34, z: 0}
+  m_Center: {x: 0.0073666573, y: 0.35465205, z: 0}
 --- !u!54 &2043608600
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3304,7 +3304,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &2043608601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3320,7 +3320,6 @@ MonoBehaviour:
   animator: {fileID: 0}
   translationSpeed: 10
   moveSpeed: 15
-  slideSpeed: 0.2
   jumpForce: 10
   maxJumpHeight: 1
 --- !u!1 &2061995571

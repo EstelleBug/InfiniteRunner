@@ -31,7 +31,7 @@ public class GameControl : MonoBehaviour
     private int totalHitCoins = 0;
     private int previousTotalHitCoins = 0;
 
-    private int numberOfObstacles = 20;
+    private int numberOfObstacles = 10;
     private int totalObstaclesCount = 0;
 
     private List<GameObject> spawnedCoins = new List<GameObject>();
@@ -122,7 +122,7 @@ public class GameControl : MonoBehaviour
         foreach (var ground in GroundsOnStage)
         {
             //SpawnCoins(ground);
-            //SpawnObstacle(ground);
+            SpawnObstacle(ground);
         }
 
         UpdateScore();
@@ -189,7 +189,7 @@ public class GameControl : MonoBehaviour
 
     private void SpawnObstacle(GameObject ground)
     {
-        float obstacleSpawnZOffset = 10f; // Minimum distance between two obstacles
+        float obstacleSpawnZOffset = 100f; // Minimum distance between two obstacles
         float obstacleSpawnXMin = 2f;
         float obstacleSpawnXMax = 4f;
 
