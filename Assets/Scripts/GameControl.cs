@@ -18,9 +18,9 @@ public class GameControl : MonoBehaviour
     private GameObject ObstacleSlidePrefabs;
 
     private float groundSize;
-    //private int consecutiveSameTypeCount = 0;
-    //private int currentGroundTypeIndex = -1; // Declare currentGroundTypeIndex here
-    //private string currentGroundTag = null;
+    private int consecutiveSameTagCount = 7;
+    private string currentTag = null;
+    private int GroundIndex = 0;
 
     private GameObject Player;
 
@@ -68,29 +68,30 @@ public class GameControl : MonoBehaviour
 
         GroundsOnStage = new GameObject[numberOfGrounds];
 
+        int forestIndex = 0; // Index to track the current forest terrain
+
         for (int i = 0; i < numberOfGrounds; i++)
         {
-            int n = Random.Range(0, GroundsPrefabs.Length);
-            //UpdateGroundType();
-            GroundsOnStage[i] = Instantiate(GroundsPrefabs[n]);
-            //GroundsOnStage[i] = Instantiate(GroundsPrefabs[currentGroundTypeIndex]);
+            // Instantiate a Forest ground based on the current forestIndex
+            GroundsOnStage[i] = Instantiate(GroundsPrefabs[GetForestIndices()[forestIndex]]);
+            //consecutiveSameTagCount++;
+
+            // Store the tag of the first terrain as the current tag
+            if (currentTag == null)
+            {
+                currentTag = GroundsOnStage[i].tag;
+            }
+
+            // Move to the next forest terrain type
+            forestIndex = (forestIndex + 1) % GetForestIndices().Count;
         }
 
-        //groundSize = GroundsOnStage[0].GetComponentInChildren<Transform>().Find("Road").localScale.z;
         groundSize = 23.3f;
 
         float pos = Player.transform.position.z + groundSize / 2 - 1.5f;
         foreach (var ground in GroundsOnStage)
         {
-            // Adjust ground position based on the tag
-            if (ground.CompareTag("Desert") || ground.CompareTag("Mountain"))
-            {
-                ground.transform.position = new Vector3(1f, 0.2f, pos);
-            }
-            else if (ground.CompareTag("Forest"))
-            {
-                ground.transform.position = new Vector3(0, 0.2f, pos);
-            }
+            ground.transform.position = new Vector3(0f, 0.2f, pos);
             pos += groundSize;
         }
     }
@@ -105,13 +106,17 @@ public class GameControl : MonoBehaviour
 
             if (ground.transform.position.z + groundSize / 2 < Player.transform.position.z - 6f)
             {
+                Debug.Log("NEW GROUND");
+                Debug.Log(consecutiveSameTagCount);
+
                 float z = ground.transform.position.z;
                 DestroyCoinsOnGround(ground);
                 DestroyObstaclesOnGround(ground);
                 Destroy(ground);
-                int n = Random.Range(0, GroundsPrefabs.Length);
-                ground = Instantiate(GroundsPrefabs[n]);
-                // Check the tag of the new ground and adjust its position accordingly
+                ground = Instantiate(GroundsPrefabs[AddNewGround()]);
+                currentTag = ground.tag;
+
+                // Calculate the new position
                 if (ground.CompareTag("Desert") || ground.CompareTag("Mountain"))
                 {
                     ground.transform.position = new Vector3(1f, 0.2f, z + groundSize * numberOfGrounds);
@@ -121,7 +126,6 @@ public class GameControl : MonoBehaviour
                     ground.transform.position = new Vector3(0, 0.2f, z + groundSize * numberOfGrounds);
                 }
 
-                //ground.transform.position = new Vector3(0, 0.2f, z + groundSize * numberOfGrounds);
                 GroundsOnStage[i] = ground;
             }
         }
@@ -129,7 +133,7 @@ public class GameControl : MonoBehaviour
         foreach (var ground in GroundsOnStage)
         {
             //SpawnCoins(ground);
-            SpawnObstacle(ground);
+            //SpawnObstacle(ground);
         }
 
         UpdateScore();
@@ -309,35 +313,120 @@ public class GameControl : MonoBehaviour
         }
     }
 
-    /*private void UpdateGroundType()
+    private int AddNewGround()
     {
-        int newGroundTypeIndex = Random.Range(0, GroundsPrefabs.Length);
-        string newGroundTag = GroundsPrefabs[newGroundTypeIndex].tag;
+        if (consecutiveSameTagCount >= 6 && consecutiveSameTagCount <= 10)
+        {
+            // Génère un nombre aléatoire entre 0 et 1
+            float chance = Random.value;
 
-        if (currentGroundTag == null || newGroundTag != currentGroundTag)
-        {
-            currentGroundTag = newGroundTag;
-            consecutiveSameTypeCount = 1;
-        }
-        else
-        {
-            consecutiveSameTypeCount++;
-            if (consecutiveSameTypeCount >= 6)
+            if (chance < 0.5f)
             {
-                int currentIndex = newGroundTypeIndex;
-                for (int i = 1; i < GroundsPrefabs.Length; i++)
+                GroundIndex = ChangeTerrainTag();
+                Debug.Log($"Chance : ChangeTag {GroundIndex}");
+            }
+            else
+            {
+                Debug.Log($"No Change Tag {currentTag}");
+                consecutiveSameTagCount++;
+
+                switch (currentTag)
                 {
-                    currentIndex = (currentIndex + 1) % GroundsPrefabs.Length;
-                    if (GroundsPrefabs[currentIndex].tag != currentGroundTag)
-                    {
-                        currentGroundTag = GroundsPrefabs[currentIndex].tag;
-                        consecutiveSameTypeCount = 1;
+                    case "Forest":
+                        GroundIndex = Random.Range(0, GetForestIndices().Count);
                         break;
-                    }
+                    case "Desert":
+                        GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                        break;
+                    case "Mountain":
+                        GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                        break;
                 }
             }
         }
-    }*/
+        else if (consecutiveSameTagCount > 10)
+        {
+            GroundIndex = ChangeTerrainTag();
+            Debug.Log($"Too many : ChangeTag {GroundIndex}");
+        }
+        else if (consecutiveSameTagCount < 6)
+        {
+            Debug.Log($"No Change Tag {currentTag}");
+            consecutiveSameTagCount++;
+
+            switch (currentTag)
+            {
+                case "Forest":
+                    GroundIndex = Random.Range(0, GetForestIndices().Count);
+                    break;
+                case "Desert":
+                    GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                    break;
+                case "Mountain":
+                    GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                    break;
+            }
+        }
+
+            return GroundIndex;
+    }
+
+    private int ChangeTerrainTag()
+    {
+        int newTagIndex = Random.Range(0, GroundsPrefabs.Length);
+        string newTag = GroundsPrefabs[newTagIndex].tag;
+
+        // Avoid changing to the same tag
+        if (newTag != currentTag)
+        {
+            currentTag = newTag;
+            consecutiveSameTagCount = 1; // Reset count
+        }
+        else
+        {
+            consecutiveSameTagCount++;
+        }
+        return newTagIndex;
+    }
+
+    private List<int> GetForestIndices()
+    {
+        List<int> forestIndices = new List<int>();
+        for (int i = 0; i < GroundsPrefabs.Length; i++)
+        {
+            if (GroundsPrefabs[i].CompareTag("Forest"))
+            {
+                forestIndices.Add(i);
+            }
+        }
+        return forestIndices;
+    }
+
+    private List<int> GetDesertIndices()
+    {
+        List<int> desertIndices = new List<int>();
+        for (int i = 0; i < GroundsPrefabs.Length; i++)
+        {
+            if (GroundsPrefabs[i].CompareTag("Desert"))
+            {
+                desertIndices.Add(i);
+            }
+        }
+        return desertIndices;
+    }
+
+    private List<int> GetMountainIndices()
+    {
+        List<int> mountainIndices = new List<int>();
+        for (int i = 0; i < GroundsPrefabs.Length; i++)
+        {
+            if (GroundsPrefabs[i].CompareTag("Mountain"))
+            {
+                mountainIndices.Add(i);
+            }
+        }
+        return mountainIndices;
+    }
 
     public int GetScore()
     {

@@ -3231,6 +3231,7 @@ GameObject:
   - component: {fileID: 2043608600}
   - component: {fileID: 2043608599}
   - component: {fileID: 2043608601}
+  - component: {fileID: 2043608602}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3322,6 +3323,29 @@ MonoBehaviour:
   moveSpeed: 15
   jumpForce: 10
   maxJumpHeight: 1
+--- !u!136 &2043608602
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043608597}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 2
+  m_Direction: 2
+  m_Center: {x: 0, y: -0.3, z: 0}
 --- !u!1 &2061995571
 GameObject:
   m_ObjectHideFlags: 0
