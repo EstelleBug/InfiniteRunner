@@ -44,6 +44,8 @@ public class GameControl : MonoBehaviour
     private int newScore = 0;
     private int bonusScore = 0;
 
+    private int distance = 0;
+
     public GameOverScreen GameOverScreen;
     public GameObject CoinCount;
     public GameObject ScoreCount;
@@ -140,7 +142,20 @@ public class GameControl : MonoBehaviour
         }
 
         UpdateScore();
+        UpdateDistance();
 
+    }
+
+    private void UpdateDistance()
+    {
+        int newDistance = Mathf.FloorToInt(Player.transform.position.z);
+
+        if (newDistance != distance && newDistance % 500 == 0)
+        {
+            distance = newDistance;
+            GameControlUI.Instance.ShowDistanceMessage(distance);
+            Debug.Log("distance");
+        }
     }
 
     private void UpdateScore()
@@ -152,7 +167,7 @@ public class GameControl : MonoBehaviour
         {
             bonusScore = (newHitCoins / 100) * 1000 + bonusScore;
             previousTotalHitCoins = totalHitCoins; // Mettre à jour le total précédent de pièces
-            GameControlUI.Instance.ShowMessage();
+            GameControlUI.Instance.ShowBonusMessage();
             AudioManager.Instance.PlaySound(bonusSound);
         }
 

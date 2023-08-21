@@ -13,8 +13,14 @@ public class GameControlUI : MonoBehaviour
     [SerializeField]
     private TMP_Text coinText;
     [SerializeField]
-    private TMP_Text messageText;
+    private TMP_Text bonusText;
     private float messageDuration = 2f;
+    [SerializeField]
+    private Image distanceParentImage; // Reference to the parent image of the distance text
+    private float targetYPosition = -84f;
+    private float moveDuration = 0.5f;
+
+    public AudioClip distanceSound;
 
     private void Awake()
     {
@@ -29,7 +35,8 @@ public class GameControlUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        messageText.gameObject.SetActive(false);
+        bonusText.gameObject.SetActive(false);
+        distanceParentImage.gameObject.SetActive(false); // Initially hide the distance parent image
     }
 
     // Update is called once per frame
@@ -39,10 +46,10 @@ public class GameControlUI : MonoBehaviour
         coinText.text = "Coin: " + GameControl.Instance.GetCoin();
     }
 
-    public void ShowMessage()
+    public void ShowBonusMessage()
     {
-        messageText.text = "+1000 !";
-        messageText.gameObject.SetActive(true);
+        bonusText.text = "+1000 !";
+        bonusText.gameObject.SetActive(true);
 
         StartCoroutine(HideMessageAfterDelay());
     }
@@ -50,6 +57,51 @@ public class GameControlUI : MonoBehaviour
     private IEnumerator HideMessageAfterDelay()
     {
         yield return new WaitForSeconds(messageDuration);
-        messageText.gameObject.SetActive(false);
+        bonusText.gameObject.SetActive(false);
     }
+
+    public void ShowDistanceMessage(int distance)
+    {
+        distanceParentImage.gameObject.SetActive(true);
+
+        Text distanceText = distanceParentImage.GetComponentInChildren<Text>();
+        distanceText.text = $" {distance} m ";
+
+        StartCoroutine(AnimateMessage());
+        AudioManager.Instance.PlaySound(distanceSound);
+    }
+
+    private IEnumerator AnimateMessage()
+    {
+        RectTransform rectTransform = distanceParentImage.GetComponent<RectTransform>();
+        Vector3 initialPosition = rectTransform.anchoredPosition3D;
+        Vector3 targetPosition = new Vector3(initialPosition.x, targetYPosition, initialPosition.z);
+
+        // Move message down
+        float startTime = Time.time;
+        float elapsedTime = 0f;
+        while (elapsedTime < moveDuration)
+        {
+            float t = elapsedTime / moveDuration;
+            rectTransform.anchoredPosition3D = Vector3.Lerp(initialPosition, targetPosition, t);
+            elapsedTime = Time.time - startTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(messageDuration);
+
+        // Move message back up
+        startTime = Time.time;
+        elapsedTime = 0f;
+        while (elapsedTime < moveDuration)
+        {
+            float t = elapsedTime / moveDuration;
+            rectTransform.anchoredPosition3D = Vector3.Lerp(targetPosition, initialPosition, t);
+            elapsedTime = Time.time - startTime;
+            yield return null;
+        }
+
+        distanceParentImage.gameObject.SetActive(false); // Hide the distance parent image
+    }
+
 }

@@ -49,7 +49,6 @@ public class animationStateControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isSliding);
 
         float moveInput = playerInput.CharacterControl.Move.ReadValue<float>();
         float horizontalMove = moveInput * translationSpeed * Time.deltaTime;
