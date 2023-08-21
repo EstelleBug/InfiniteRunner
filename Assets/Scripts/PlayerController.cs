@@ -22,6 +22,7 @@ public class animationStateControler : MonoBehaviour
     private float gravity = 9.81f; // Gravité
 
     private bool isJumping = false;
+    private bool isSliding = false;
     private float initialYPosition;
 
     private const float MIN_X = -2f;
@@ -46,6 +47,7 @@ public class animationStateControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isSliding);
 
         float moveInput = playerInput.CharacterControl.Move.ReadValue<float>();
         float horizontalMove = moveInput * translationSpeed * Time.deltaTime;
@@ -64,8 +66,16 @@ public class animationStateControler : MonoBehaviour
         {
             animator.SetBool("isSliding", false);
         }
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running Slide"))
+        {
+            isSliding = true;
+        }
+        else
+        {
+            isSliding = false;
+        }
 
-        if (playerInput.CharacterControl.Jump.triggered && !isJumping)
+        if (playerInput.CharacterControl.Jump.triggered && !isJumping && !isSliding)
         {
             animator.SetBool("reachedHeight", false);
             animator.SetBool("isJumping", true);

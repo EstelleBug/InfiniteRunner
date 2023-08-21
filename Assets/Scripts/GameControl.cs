@@ -106,8 +106,8 @@ public class GameControl : MonoBehaviour
 
             if (ground.transform.position.z + groundSize / 2 < Player.transform.position.z - 6f)
             {
-                Debug.Log("NEW GROUND");
-                Debug.Log(consecutiveSameTagCount);
+                //Debug.Log("NEW GROUND");
+                //Debug.Log(consecutiveSameTagCount);
 
                 float z = ground.transform.position.z;
                 DestroyCoinsOnGround(ground);
@@ -323,11 +323,11 @@ public class GameControl : MonoBehaviour
             if (chance < 0.5f)
             {
                 GroundIndex = ChangeTerrainTag();
-                Debug.Log($"Chance : ChangeTag {GroundIndex}");
+                //Debug.Log($"Chance : ChangeTag {GroundIndex}");
             }
             else
             {
-                Debug.Log($"No Change Tag {currentTag}");
+                //Debug.Log($"No Change Tag {currentTag}");
                 consecutiveSameTagCount++;
 
                 switch (currentTag)
@@ -347,11 +347,11 @@ public class GameControl : MonoBehaviour
         else if (consecutiveSameTagCount > 10)
         {
             GroundIndex = ChangeTerrainTag();
-            Debug.Log($"Too many : ChangeTag {GroundIndex}");
+            //Debug.Log($"Too many : ChangeTag {GroundIndex}");
         }
         else if (consecutiveSameTagCount < 6)
         {
-            Debug.Log($"No Change Tag {currentTag}");
+            //Debug.Log($"No Change Tag {currentTag}");
             consecutiveSameTagCount++;
 
             switch (currentTag)
