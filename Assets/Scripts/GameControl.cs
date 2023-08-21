@@ -48,6 +48,9 @@ public class GameControl : MonoBehaviour
     public GameObject CoinCount;
     public GameObject ScoreCount;
 
+    public AudioClip collectSound;
+    public AudioClip bonusSound;
+
     private void Awake()
     {
         if (Instance != null)
@@ -132,7 +135,7 @@ public class GameControl : MonoBehaviour
 
         foreach (var ground in GroundsOnStage)
         {
-            //SpawnCoins(ground);
+            SpawnCoins(ground);
             //SpawnObstacle(ground);
         }
 
@@ -150,6 +153,7 @@ public class GameControl : MonoBehaviour
             bonusScore = (newHitCoins / 100) * 1000 + bonusScore;
             previousTotalHitCoins = totalHitCoins; // Mettre à jour le total précédent de pièces
             GameControlUI.Instance.ShowMessage();
+            AudioManager.Instance.PlaySound(bonusSound);
         }
 
         newScore = Mathf.FloorToInt(Player.transform.position.z) + bonusScore;
@@ -309,6 +313,7 @@ public class GameControl : MonoBehaviour
             if (coin.CompareTag("Reward"))
             {
                 totalHitCoins++;
+                AudioManager.Instance.PlaySound(collectSound);
             }
         }
     }

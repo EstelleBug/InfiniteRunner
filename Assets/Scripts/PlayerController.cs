@@ -30,6 +30,8 @@ public class animationStateControler : MonoBehaviour
 
     private Rigidbody rb;
 
+    public AudioClip HitSound;
+
     void Awake()
     {
         playerInput = new PlayerInput();
@@ -127,6 +129,7 @@ public class animationStateControler : MonoBehaviour
         {
             //Debug.Log("obstacle");
             animator.SetTrigger("isHit");
+            AudioManager.Instance.PlaySound(HitSound);
             currentSpeed = 0;
             rb.velocity = Vector3.zero; // Arrête la vélocité du Rigidbody
             StartCoroutine(WaitAndGameOver());
