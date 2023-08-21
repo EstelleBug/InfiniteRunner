@@ -44,6 +44,7 @@ public class GameControl : MonoBehaviour
     private int newScore = 0;
     private int bonusScore = 0;
 
+    private PlayerController playerController;
     private int distance = 0;
 
     public GameOverScreen GameOverScreen;
@@ -70,6 +71,7 @@ public class GameControl : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("Ch03_nonPBR");
+        playerController = Player.GetComponentInParent<PlayerController>();
 
         GroundsOnStage = new GameObject[numberOfGrounds];
 
@@ -154,7 +156,7 @@ public class GameControl : MonoBehaviour
         {
             distance = newDistance;
             GameControlUI.Instance.ShowDistanceMessage(distance);
-            Debug.Log("distance");
+            playerController.UpdateMoveSpeed(1f);
         }
     }
 

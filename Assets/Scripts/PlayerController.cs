@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class animationStateControler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public Animator animator;
     public PlayerInput playerInput;
@@ -118,7 +118,15 @@ public class animationStateControler : MonoBehaviour
             rb.position = new Vector3(MIN_X, transform.position.y, transform.position.z);
         }
 
-        //Debug.Log(currentSpeed);
+    }
+
+    public void UpdateMoveSpeed(float increment)
+    {
+        if (moveSpeed < 30)
+        {
+            moveSpeed += increment;
+            currentSpeed = moveSpeed;
+        }
     }
 
     void OnTriggerEnter(Collider other)
