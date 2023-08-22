@@ -20,10 +20,18 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     public void PlaySound (AudioClip clip)
     {
         effectsSource.PlayOneShot(clip);
+    }
+
+    public void PlayMusic(AudioClip clip)
+    {
+        musicSource.Stop();
+        musicSource.clip = null;
+        musicSource.PlayOneShot(clip);
     }
 }

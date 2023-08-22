@@ -75,14 +75,14 @@ public class PlayerController : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running Slide"))
         {
             isSliding = true;
-            //normalCollider.gameObject.SetActive(false);
-            //slideCollider.gameObject.SetActive(true);
+            normalCollider.enabled = false;
+            slideCollider.enabled = true;
         }
         else
         {
             isSliding = false;
-            //normalCollider.gameObject.SetActive(true);
-            //slideCollider.gameObject.SetActive(false);
+            normalCollider.enabled = true;
+            slideCollider.enabled = false;
         }
 
         if (playerInput.CharacterControl.Jump.triggered && !isJumping && !isSliding)

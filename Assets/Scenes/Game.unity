@@ -5184,6 +5184,7 @@ MonoBehaviour:
   bonusText: {fileID: 925911963}
   distanceParentImage: {fileID: 2032567943}
   distanceSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c, type: 3}
+  bgMusic: {fileID: 8300000, guid: 5ef98cc7e9127b14e87cde36474f1c3a, type: 3}
 --- !u!114 &2124779573 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3403934610623428252, guid: bf0e2f17a8abf004e9e1427bca8a83fa, type: 3}

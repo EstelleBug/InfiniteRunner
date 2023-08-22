@@ -21,6 +21,7 @@ public class GameControlUI : MonoBehaviour
     private float moveDuration = 0.5f;
 
     public AudioClip distanceSound;
+    public AudioClip bgMusic;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class GameControlUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AudioManager.Instance.PlayMusic(bgMusic);
         bonusText.gameObject.SetActive(false);
         distanceParentImage.gameObject.SetActive(false); // Initially hide the distance parent image
     }
