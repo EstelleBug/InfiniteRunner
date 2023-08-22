@@ -71,7 +71,7 @@ public class GameControl : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("Ch03_nonPBR");
-        playerController = Player.GetComponentInParent<PlayerController>();
+        playerController = Player.GetComponent<PlayerController>();
 
         GroundsOnStage = new GameObject[numberOfGrounds];
 
@@ -113,8 +113,6 @@ public class GameControl : MonoBehaviour
 
             if (ground.transform.position.z + groundSize / 2 < Player.transform.position.z - 6f)
             {
-                //Debug.Log("NEW GROUND");
-                //Debug.Log(consecutiveSameTagCount);
 
                 float z = ground.transform.position.z;
                 DestroyCoinsOnGround(ground);
@@ -140,7 +138,7 @@ public class GameControl : MonoBehaviour
         foreach (var ground in GroundsOnStage)
         {
             SpawnCoins(ground);
-            //SpawnObstacle(ground);
+            SpawnObstacle(ground);
         }
 
         UpdateScore();
@@ -345,23 +343,24 @@ public class GameControl : MonoBehaviour
             if (chance < 0.5f)
             {
                 GroundIndex = ChangeTerrainTag();
-                //Debug.Log($"Chance : ChangeTag {GroundIndex}");
             }
             else
             {
-                //Debug.Log($"No Change Tag {currentTag}");
                 consecutiveSameTagCount++;
 
                 switch (currentTag)
                 {
                     case "Forest":
-                        GroundIndex = Random.Range(0, GetForestIndices().Count);
+                        //GroundIndex = Random.Range(0, GetForestIndices().Count);
+                        GroundIndex = Random.Range(0, 3);
                         break;
                     case "Desert":
-                        GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                        //GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                        GroundIndex = Random.Range(4, 7);
                         break;
                     case "Mountain":
-                        GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                        //GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                        GroundIndex = Random.Range(8, 9);
                         break;
                 }
             }
@@ -369,23 +368,24 @@ public class GameControl : MonoBehaviour
         else if (consecutiveSameTagCount > 10)
         {
             GroundIndex = ChangeTerrainTag();
-            //Debug.Log($"Too many : ChangeTag {GroundIndex}");
         }
         else if (consecutiveSameTagCount < 6)
         {
-            //Debug.Log($"No Change Tag {currentTag}");
             consecutiveSameTagCount++;
 
             switch (currentTag)
             {
                 case "Forest":
-                    GroundIndex = Random.Range(0, GetForestIndices().Count);
+                    //GroundIndex = Random.Range(0, GetForestIndices().Count);
+                    GroundIndex = Random.Range(0, 3);
                     break;
                 case "Desert":
-                    GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                    //GroundIndex = Random.Range(0, GetDesertIndices().Count);
+                    GroundIndex = Random.Range(4, 7);
                     break;
                 case "Mountain":
-                    GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                    //GroundIndex = Random.Range(0, GetMountainIndices().Count);
+                    GroundIndex = Random.Range(8, 9);
                     break;
             }
         }

@@ -9,6 +9,11 @@ public class PlayerController : MonoBehaviour
     public PlayerInput playerInput;
 
     [SerializeField]
+    private CapsuleCollider normalCollider;
+    [SerializeField]
+    private CapsuleCollider slideCollider;
+
+    [SerializeField]
     private float translationSpeed;
 
     [SerializeField]
@@ -35,7 +40,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         playerInput = new PlayerInput();
-        animator = GetComponentInChildren<Animator>();
+        animator = this.GetComponent<Animator>();
         rb = this.GetComponent<Rigidbody>(); 
 
     }
@@ -70,10 +75,14 @@ public class PlayerController : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Running Slide"))
         {
             isSliding = true;
+            //normalCollider.gameObject.SetActive(false);
+            //slideCollider.gameObject.SetActive(true);
         }
         else
         {
             isSliding = false;
+            //normalCollider.gameObject.SetActive(true);
+            //slideCollider.gameObject.SetActive(false);
         }
 
         if (playerInput.CharacterControl.Jump.triggered && !isJumping && !isSliding)
