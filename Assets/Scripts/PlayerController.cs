@@ -36,6 +36,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
 
     public AudioClip HitSound;
+    public AudioClip PainSound;
+    public AudioClip SlideSound;
+    public AudioClip JumpSound;
 
     void Awake()
     {
@@ -67,6 +70,7 @@ public class PlayerController : MonoBehaviour
         if (playerInput.CharacterControl.Slide.triggered)
         {
             animator.SetBool("isSliding", true);
+            AudioManager.Instance.PlaySound(SlideSound);
         }
         if (!playerInput.CharacterControl.Slide.triggered)
         {
@@ -89,6 +93,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetBool("reachedHeight", false);
             animator.SetBool("isJumping", true);
+            AudioManager.Instance.PlaySound(JumpSound);
             isJumping = true;
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
@@ -146,6 +151,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("obstacle");
             animator.SetTrigger("isHit");
             AudioManager.Instance.PlaySound(HitSound);
+            AudioManager.Instance.PlaySound(PainSound);
             currentSpeed = 0;
             rb.velocity = Vector3.zero; // Arrête la vélocité du Rigidbody
             StartCoroutine(WaitAndGameOver());

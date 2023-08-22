@@ -14,11 +14,14 @@ public class GameOverScreen : MonoBehaviour
     private TMP_Text messageText;
     private float messageDuration = 3f;
 
+    public AudioClip GameOverMusic;
+
     public void Setup(int score)
     {
         gameObject.SetActive(true);
         scoreText.text = "Score: " + score;
         messageText.gameObject.SetActive(false);
+        AudioManager.Instance.PlayMusic(GameOverMusic);
     }
 
     public void SaveScore()

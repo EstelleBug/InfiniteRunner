@@ -1362,6 +1362,7 @@ MonoBehaviour:
   scoreText: {fileID: 952897731}
   usernameText: {fileID: 1282251385}
   messageText: {fileID: 532002324}
+  GameOverMusic: {fileID: 8300000, guid: 2cfa0925a3891f245a33a1d7f51c718a, type: 3}
 --- !u!1 &873624650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2682,6 +2683,9 @@ MonoBehaviour:
   jumpForce: 10
   maxJumpHeight: 1
   HitSound: {fileID: 8300000, guid: 7bef0064f8567430cac22499c6b93d4f, type: 3}
+  PainSound: {fileID: 8300000, guid: e6d00863ac16c79449af403dc76c5ec0, type: 3}
+  SlideSound: {fileID: 8300000, guid: c808ae5613dc110479fc8cd0bbe4968d, type: 3}
+  JumpSound: {fileID: 8300000, guid: 4f1d2b4c55bf8bb4d9558c32624de410, type: 3}
 --- !u!54 &1467733298
 Rigidbody:
   m_ObjectHideFlags: 0
