@@ -145,10 +145,8 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("hitsomething");
         if (other.gameObject.tag == ("Obstacle"))
         {
-            //Debug.Log("obstacle");
             animator.SetTrigger("isHit");
             AudioManager.Instance.PlaySound(HitSound);
             AudioManager.Instance.PlaySound(PainSound);
