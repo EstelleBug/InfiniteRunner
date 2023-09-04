@@ -10,7 +10,8 @@ public class HighScoreDisplay : MonoBehaviour
 
     private void Start()
     {
-        List<DatabaseManager.DBScore> topScores = DatabaseManager.topScores(numberOfTopScoresToShow);
+        //List<DatabaseManager.DBScore> topScores = DatabaseManager.topScores(numberOfTopScoresToShow);
+        List<(string username, int score, int coins)> topScores = DatabaseManager.GetTopScores(numberOfTopScoresToShow);
 
         for (int i = 0; i < topScores.Count; i++)
         {
